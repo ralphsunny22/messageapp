@@ -8,7 +8,9 @@
 
                 @include('partials.message')
 
-                <div class="card-header">My Messages</div>
+                <div class="card-header">
+                    <a href="{{ route('userSendMessage') }}" class="text-white btn btn-primary">Create Message</a>
+                </div>
 
                 <div class="card-body">
                     

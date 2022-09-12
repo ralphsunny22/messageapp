@@ -6,44 +6,14 @@
         <div class="col-md-8">
             <div class="card">
 
-                <div class="card-header">Welcome back!</div>
+                @include('partials.message')
+
+                <div class="card-header">
+                    All Tasks
+                </div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                    {{ __('You are logged in!') }}
-
-                    <div class="d-flex justify-content-center">
-                        <a href="{{ route('userTask') }}">
-                        <div class="users p-3 bg-secondary m-1 text-white rounded-3">
-                            <h6>Total Tasks</h6>
-                            <h5>{{ count($tasks) }}</h5>
-                        </div></a>
-
-                        
-                        <div class="messages p-3 bg-primary m-1 text-white rounded-3">
-                            <h6>Pending Tasks</h6>
-                            <h5>{{ count($pendingTasks) }}</h5>
-                        </div>
-
-                        <div class="messages p-3 bg-success m-1 text-white rounded-3">
-                            <h6>Done Tasks</h6>
-                            <h5>{{ count($doneTasks) }}</h5>
-                        </div>
                     
-                        <div class="messages p-3 bg-danger m-1 text-white rounded-3">
-                            <h6>OverDue Tasks</h6>
-                            <h5>{{ count($overDueTasks) }}</h5>
-                        </div>
-                    
-                    </div>
-
-                    <div class="mt-5 text-center">
-                        <h4>5 Most Recent Tasks</h4>
-                    </div>
                     <table class="table table-hover table-bordered">
                         
                         <thead>
@@ -51,7 +21,9 @@
                                 <th>S/No</th>
                                 <th>Title</th>
                                 <th>Category</th>
+                                <th>User</th>
                                 <th>Deadline</th>
+                                
                                 <th>Status</th>
                                
                                 <th>Action</th>
@@ -60,11 +32,12 @@
                         <tbody id="myTableBody">
                             @if (count($tasks) > 0)
 
-                            @foreach ($recentTasks as $key=>$task)
+                            @foreach ($tasks as $key=>$task)
                             <tr class="featured_outer">
                                 <td>{{ ++$key }}</td>
                                 <td>{{ $task->title }}</td>
                                 <td>{{ $task->category->title }}</td>
+                                <td>{{ $task->user->name }}</td>
                                 <td>{{ $task->deadline_date }}</td>
                                 
                                 <td class="status">
@@ -110,16 +83,16 @@
                             @endforeach
                             
                             @else
-                                <tr class="text-center"><td colspan="5">No data available</td></tr>
+                                <tr class="text-center"><td colspan="7">No data available</td></tr>
                             @endif
                             
                         </tbody>
                     </table>
+                </div>
             </div>
         </div>
     </div>
-
-    
-
 </div>
 @endsection
+
+

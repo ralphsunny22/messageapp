@@ -31,11 +31,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@user.com',
             'phone_number' => '08031423346',
             'password' => Hash::make('Abstract9@'),
+            'status' => 'active',
         ]);
 
         \App\Models\User::factory()->create([
-            'name' => 'Active User',
-            'email' => 'active@user.com',
+            'name' => 'New User',
+            'email' => 'new@user.com',
             'phone_number' => '08041433545',
             'password' => Hash::make('Abstract9@'),
         ]);

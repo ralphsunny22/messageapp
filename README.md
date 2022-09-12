@@ -19,8 +19,6 @@ Simply User Admin Messaging Application, where users can create and view message
 - php artisan serve
 - Good luck...
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
 ## Important credentials
 
 - user-login: user@user.com, password:Abstract9@

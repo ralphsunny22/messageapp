@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Session;
 
 use App\Models\User;
 use App\Models\Message;
+use App\Models\Category;
+use App\Models\Task;
 
 class UserController extends Controller
 {
@@ -91,8 +93,15 @@ class UserController extends Controller
     
     public function userDashboard()
     {
-        $admins = User::where('isAdmin',true)->get();
-        return view('userDashboard', \compact('admins'));
+        $user = Auth::user();
+        $tasks = $user->tasks;
+        $recentTasks = $user->tasks()->orderBy('id', 'DESC')->paginate('5');
+
+        $pendingTasks = $user->tasks()->where('status','pending')->get();
+        $doneTasks = $user->tasks()->where('status','done')->get();
+        $overDueTasks = $user->tasks()->where('status','overdue')->get();
+
+        return view('userDashboard', \compact('tasks', 'recentTasks', 'pendingTasks', 'doneTasks', 'overDueTasks'));
     }
 
     /**
@@ -101,6 +110,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function userSendMessage()
+    {
+        $admins = User::where('isAdmin',true)->get();
+        return view('userSendMessage', compact('admins'));
+    }
     public function sendMessage(Request $request)
     {
         $request->validate([
@@ -131,19 +146,67 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function userTask()
     {
-        //
+        $user = Auth::user();
+        $tasks = $user->tasks;
+        return view('userTasks', \compact('tasks'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function userAddTask()
     {
-        //
+        $categories = Category::where('status', 'active')->get();
+        return view('userAddTask', compact('categories'));
     }
+
+    public function userAddTaskPost(Request $request)
+    {
+        $request->validate([
+            'title' => ['required'],
+            'category' => ['required', 'string'],
+            'deadline' => ['required'],
+            'status' => ['required', 'string'],
+        ]);
+        $data = $request->all();
+        
+        
+        Task::create([
+            'title' => $data['title'],
+            'category_id' => $data['category'],
+            'deadline_date' => $data['deadline'],
+            'created_by' => Auth::user()->id,
+            'status' => $data['status'],
+        ]);
+
+        return back()->with('success', 'Task Created Successfully');
+    }
+
+    public function updateTaskStatus($action, $task_id)
+    {
+        $task = Task::findOrFail($task_id);
+        if($action=='done'){
+            $task->update(['status'=>'done']);
+            return back()->with('success', 'Task Updated Successfully');
+        }
+
+        if($action=='pending'){
+            $task->update(['status'=>'pending']);
+            return back()->with('success', 'Task Updated Successfully');
+        }
+
+        if($action=='overdue'){
+            $task->update(['status'=>'overdue']);
+            return back()->with('success', 'Task Updated Successfully');
+        }
+    }
+
+    public function deleteTask($task_id)
+    {
+        $task = Task::findOrFail($task_id);
+        $task->delete();
+        return back()->with('success', 'Task Removed Successfully');
+    }
+    
+
+   
 }

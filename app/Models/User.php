@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Message', 'receiver_id');
     }
+
+    public function tasks()
+    {
+        return $this->hasMany('App\Models\Task', 'created_by');
+    }
 }

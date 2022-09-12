@@ -13,7 +13,10 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <!-- Scripts -->
+    <!-- for production add -->
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+
+    <!-- for local only -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
@@ -38,6 +41,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('messages') }}" style="color: #000;">Messages</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('adminCategory') }}" style="color: #000;">Categories</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('adminTask') }}" style="color: #000;">Tasks</a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('adminDashboard') }}" style="color: #000;">Admin Dashboard</a>
@@ -49,6 +59,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('userMessages') }}" style="color: #000;">My Messages</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('userTask') }}" style="color: #000;">My Tasks</a>
                         </li>
                         @endif 
                         @endauth 
@@ -95,5 +108,7 @@
             @yield('content')
         </main>
     </div>
+    <!--for production-->
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}
 </body>
 </html>
